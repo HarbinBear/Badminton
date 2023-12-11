@@ -18,16 +18,20 @@ def order_it(config, user_index, begin_time, end_time, today_or_tomorrow):
     user_info = config['USERS_INFO'][user_index]
     headers = config['HEADERS'].copy()
 
-    checkdata_s = f'[{{"FieldNo":"","FieldTypeNo":"YMQ01","BeginTime":"{begin_time}","Endtime":"{end_time}","Price":"0.00"}}]'
+    checkdata_s = f'[{{' \
+                      f'"FieldNo":"",' \
+                      f'"FieldTypeNo":"YMQ01",' \
+                      f'"BeginTime":"{begin_time}",' \
+                      f'"Endtime":"{end_time}",' \
+                      f'"Price":"0.00"' \
+                  f'}}]'
+
     checkdata = quote(checkdata_s)
-    # url = f'http://changguan.cuc.edu.cn/Field/OrderFieldGR?VenueNo=002&FieldTypeNo=YMQ01&dateadd={today_or_tomorrow}&checkdata={checkdata}'
     url = f'http://changguan.cuc.edu.cn/Field/OrderFieldGR'
 
     params = {
         'VenueNo':'002',
-        # 'VenueNo':'001',
         'FieldTypeNo':'YMQ01',
-        # 'FieldTypeNo':'LQ01',
         'dateadd':today_or_tomorrow,
         'checkdata':checkdata
     }
@@ -39,17 +43,7 @@ def order_it(config, user_index, begin_time, end_time, today_or_tomorrow):
     # response
     response = requests.get(url, headers=headers , params=params )
 
-
-    # dec1
     result_json = response.json()
-
-    # dec2
-    # content = response.text.encode().decode('utf-8-sig')
-    # result_json = json.loads( content )
-
-    # dec3
-    # decode_data = codecs.decode( response.text.encode() , 'utf-8-sig' )
-    # result_json = json.loads(decode_data)
 
     if result_json.get('message') != '当前时间段未找到合适空闲场地，请刷新界面重新选择时间段！':
         return 1
