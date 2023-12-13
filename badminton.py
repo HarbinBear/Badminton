@@ -61,7 +61,7 @@ if __name__ == "__main__":
     users.append(user)
     # id = 1
     user = {
-        'jwt_user_token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMjIwMTM1MTA1MjIxIiwiZXhwIjoxNzAyMjQ1MjQwLjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0wOSAyMTo1NDowMCJ9.qzWR4peA9zPevyXoAn2KaFAuNna50pAqqXrXInFF2oA',
+        'jwt_user_token':'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMjIwMTM1MTA1MjIxIiwiZXhwIjoxNzAyNTAyNTMyLjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xMiAyMToyMjoxMiJ9.Z0Ja0yeO_c0nNSPpYHkvMOmNekpA4rUIlOoVsSfPAUA',
         'OpenId':'202220135105221',
     }
     users.append(user)
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     }
     users.append(user)
     weekday = datetime.now().weekday() % 3
-    id = weekday
+    id = 1
     jwt_user_token = users[id]['jwt_user_token']
     OpenId = users[id]['OpenId']
 
@@ -83,9 +83,9 @@ if __name__ == "__main__":
 
     while True:
         time_now = time.strftime("%H:%M:%S", time.localtime())
-        if "08:10:00" > time_now >= "07:50:00":  # 此处设置每天定时的时间，18表示下午六点-7点场，1表示预约明天的场，0表示今天的场
-            main(19, 1, jwt_user_token, OpenId, headers)
-            main(20, 1, jwt_user_token, OpenId, headers)
+        # if "08:10:00" > time_now >= "07:50:00":  # 此处设置每天定时的时间，18表示下午六点-7点场，1表示预约明天的场，0表示今天的场
+        main(19, 1, jwt_user_token, OpenId, headers)
+        main(20, 1, jwt_user_token, OpenId, headers)
 
         # 检查是否达到预定的预约数量
         if result_num == num:
