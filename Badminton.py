@@ -38,7 +38,7 @@ def order_it(config, user_index, begin_time, end_time, today_or_tomorrow):
     # 构建Cookie
     headers["Cookie"] = \
         f'JWTUserToken={user_info["JWTUserToken"]}; ' \
-        f'OpenId={user_info["OpenId"]} ;'
+        f'OpenId={user_info["OpenId"]}'
 
     # response
     response = requests.get(url, headers=headers , params=params )
