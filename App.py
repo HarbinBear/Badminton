@@ -19,38 +19,45 @@ class Application(tk.Frame):
         # 用户信息选择
         self.config = load_config()
         self.user_options = [user["OpenId"] for user in self.config["USERS_INFO"]]
+
+        tk.Label(root,text="User:").pack()
         self.user_var = tk.StringVar(root)
         self.user_var.set(self.user_options[0])  # 默认选项
         self.user_menu = tk.OptionMenu(root, self.user_var, *self.user_options, command=self.user_select)
-        self.user_menu.pack()
+        self.user_menu.pack(pady=10)
 
+        tk.Label(root,text="Token:").pack()
         self.token_entry = tk.Entry(root)
-        self.token_entry.pack()
+        self.token_entry.pack(pady=10)
 
         # 初始token
         self.update_token()
 
         # 时间选项
+        tk.Label(root,text="第一场:").pack()
         time_options = ["{}:00~{}:00".format(i, i + 1) for i in range(15, 21)]
         self.time_var1 = tk.StringVar(root)
         self.time_var1.set(time_options[0])  # 默认选项
         self.time_menu1 = tk.OptionMenu(root, self.time_var1, *time_options)
-        self.time_menu1.pack()
+        self.time_menu1.pack(pady=10)
+
+        tk.Label(root,text="第二场:").pack()
         self.time_var2 = tk.StringVar(root)
         self.time_var2.set(time_options[0])  # 默认选项
         self.time_menu2 = tk.OptionMenu(root, self.time_var2, *time_options)
-        self.time_menu2.pack()
+        self.time_menu2.pack(pady=10)
 
         # 开始预约按钮
         self.go_button = tk.Button(root, text="开始预约", command=self.start_booking)
-        self.go_button.pack()
+        self.go_button.pack(pady=10)
 
         # 状态栏
         # self.status_var = tk.StringVar(root, value="等待预约")
         # self.status_label = tk.Label(root, textvariable=self.status_var)
         # self.status_label.pack()
+        tk.Label(root,text="日志:").pack()
         self.status_text = tk.Text(root)
-        self.status_text.pack()
+        self.status_text.pack(pady=10)
 
     def user_select(self, value):
         self.update_token()
