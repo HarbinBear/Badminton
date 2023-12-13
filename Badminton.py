@@ -7,7 +7,7 @@ from urllib.parse import quote
 import requests
 
 CONFIG_PATH = 'config.json'  # 配置文件路径
-
+bLogUrl = False
 
 def load_config():
     with open(CONFIG_PATH, 'r') as f:
@@ -30,14 +30,17 @@ def order_it( config , openid , token , begin_time, end_time, today_or_tomorrow)
 
     checkdata = quote(checkdata_s)
     url = f'http://changguan.cuc.edu.cn/Field/OrderFieldGR?VenueNo=002&FieldTypeNo=YMQ01&dateadd={today_or_tomorrow}&checkdata={checkdata}'
-    print(url)
+    global  bLogUrl
+    if bLogUrl == False :
+        print(url)
+        bLogUrl = True
 
-    params = {
-        'VenueNo':'002',
-        'FieldTypeNo':'YMQ01',
-        'dateadd':today_or_tomorrow,
-        'checkdata':checkdata
-    }
+    # params = {
+    #     'VenueNo':'002',
+    #     'FieldTypeNo':'YMQ01',
+    #     'dateadd':today_or_tomorrow,
+    #     'checkdata':checkdata
+    # }
     # 构建Cookie
     Cookie = {
         'JWTUserToken' : token,
@@ -83,8 +86,8 @@ def book( openid , token , begin_time1 , begin_time2 ):
         time_now = datetime.now().time()
         time_now_str = time_now.strftime("%H:%M:%S")
 
-        # if config['BOOKING']['END_BOOKING_AT'] > time_now_str >= config['BOOKING']['START_BOOKING_AT']:
-        if 1 :
+        if config['BOOKING']['END_BOOKING_AT'] > time_now_str >= config['BOOKING']['START_BOOKING_AT']:
+        # if 1 :
             # order_date = (datetime.now() + timedelta(days=1)).date()
             # index = datetime.now().weekday() % len(config['USERS_INFO'])
             for begin_time in config['BOOKING']['RESERVE_TIME_SLOT']:
