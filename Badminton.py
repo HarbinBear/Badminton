@@ -85,10 +85,10 @@ def book( openid , token , begin_time1 , begin_time2 ):
 
         # if config['BOOKING']['END_BOOKING_AT'] > time_now_str >= config['BOOKING']['START_BOOKING_AT']:
         if 1 :
-            order_date = (datetime.now() + timedelta(days=1)).date()
-            index = datetime.now().weekday() % len(config['USERS_INFO'])
+            # order_date = (datetime.now() + timedelta(days=1)).date()
+            # index = datetime.now().weekday() % len(config['USERS_INFO'])
             for begin_time in config['BOOKING']['RESERVE_TIME_SLOT']:
-                result = order_it( config , openid , token , f"{begin_time}:00", f"{begin_time + 1}:00", order_date)
+                result = order_it( config , openid , token , f"{begin_time}:00", f"{begin_time + 1}:00", 1)
                 result_num += result
 
         # 检查是否达到预定的预约数量

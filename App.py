@@ -101,7 +101,7 @@ class StreamToWidget(object):
 
 root = tk.Tk()
 root.geometry("800x600")
-root.title("Badminton")
+root.title("Badminton v0.1")
 app = Application(master=root)
 app.mainloop()
 
