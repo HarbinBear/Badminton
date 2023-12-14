@@ -159,8 +159,8 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("Badminton v0.2")
-root.attributes("-alpha", 0.9)
+root.title("Badminton v0.1.1")
+# root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()
 
