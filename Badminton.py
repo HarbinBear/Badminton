@@ -87,15 +87,10 @@ def order_it(  begin_time, end_time, today_or_tomorrow ):
 def book( ):
     model = Model()
 
-    print_with_time("********************开始预约!************************")
     result_num = 0
 
-    print_with_time("OpenID: {openid}".format( openid = model.openid ) )
-    print_with_time("JWTUserToken: {token}".format( token = model.token ) )
-    if model.time1_needed == True:
-        print_with_time("第一个场: {start1}:00 ~ {end1}:00 ".format( start1 = model.begin_time1 , end1 = model.begin_time1+1 ) )
-    if model.time2_needed == True:
-        print_with_time("第二个场: {start2}:00 ~ {end2}:00 ".format( start2 = model.begin_time2 , end2 = model.begin_time2+1 ) )
+    print_with_time("********************开始预约!************************")
+    print_order_status()
 
     while result_num < model.config['BOOKING']['NUM_OF_VENUES']:
 
@@ -108,17 +103,37 @@ def book( ):
         if model.debug_var.get() == True or model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT']: #  开约条件
 
             if model.time1_needed == True and model.time1_ordered == False :
-                result = order_it(f"{model.begin_time1}:00", f"{model.begin_time1 + 1}:00", 0)
+                result = order_it(f"{model.begin_time1}:00", f"{model.begin_time1 + 1}:00", model.add_Day )
                 result_num += result
 
             if model.time2_needed == True and model.time2_ordered == False :
-                result = order_it(f"{model.begin_time2}:00", f"{model.begin_time2 + 1}:00", 0)
+                result = order_it(f"{model.begin_time2}:00", f"{model.begin_time2 + 1}:00", model.add_Day )
                 result_num += result
 
         # 检查是否达到预定的预约数量
         if result_num == model.config['BOOKING']['NUM_OF_VENUES']:
             print_with_time(f"小助手今日任务完成!总共约到了{result_num}个场子！")
             break
-        # time.sleep(2)
+        time.sleep(1)
+
+
+# def make_url():
+    # 0_0
+
+def print_order_status():
+    model = Model()
+    day_str = "今天" if model.add_Day == 0 else "明天"
+    print("-----------------------预约信息-----------------------------")
+    print_with_time(f"OpenID: {model.openid}")
+    print_with_time(f"JWTUserToken: {model.token}" )
+    print_with_time(f"总共需要定{model.sum}个场子，其中：")
+    if model.time1_needed == True:
+        print_with_time(f"{day_str}第一个场: {model.begin_time1}:00 ~ {model.begin_time1 +1}:00 ")
+    if model.time2_needed == True:
+        print_with_time(f"{day_str}第二个场: {model.begin_time2}:00 ~ {model.begin_time2 +1}:00 ")
+
+
+
+    print("----------------------------------------------------------")
 
 

@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import Canvas, PhotoImage  # 导入Canvas和PhotoImage
 from PIL import Image, ImageTk
 import json
-from Badminton import load_config, order_it , book
+from Badminton import load_config, order_it , book , print_order_status
 from LogSys import StreamToWidget , print_with_time
 from datetime import datetime, timedelta
 from Model import Model
@@ -69,11 +69,11 @@ class Application(tk.Frame):
         row_num += 1
 
         tk.Label(root,text="Token:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )  # 设置背景色
-        self.token_entry = tk.Entry(root , width=130  , fg= "blue" )
+        self.token_entry = tk.Entry(root , width=130  , fg= "blue" , validatecommand= self.update_token )
         self.token_entry.grid( row = row_num , column=1  , padx=10 , pady=10, sticky=tk.W )
 
         # 初始token
-        self.update_token()
+        self.user_select()
 
         time_options = ["{}:00~{}:00".format(i, i + 1) for i in range(15, 21)]
         time_options.append("无")
@@ -83,7 +83,7 @@ class Application(tk.Frame):
         # 时间选项
         tk.Label(root,text="第一场:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )  # 设置背景色
         self.time_var1 = tk.StringVar(root)
-        self.time_var1.set(time_options[0])  # 默认选项
+        self.time_var1.set(time_options[self.model.begin_time1 - 15 ])  # 默认选项
         self.time_menu1 = tk.OptionMenu(root, self.time_var1, *time_options , command= self.update_time1 )
         self.time_menu1.grid( row = row_num , column=1  , padx=10 , pady=10, sticky=tk.W )
 
@@ -92,14 +92,20 @@ class Application(tk.Frame):
 
         tk.Label(root,text="第二场:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )
         self.time_var2 = tk.StringVar(root)
-        self.time_var2.set(time_options[0])  # 默认选项
+        self.time_var2.set(time_options[ self.model.begin_time2 - 15 ])  # 默认选项
         self.time_menu2 = tk.OptionMenu(root, self.time_var2, *time_options ,  command= self.update_time2 )
         self.time_menu2.grid( row = row_num , column=1  , padx=10 , pady=10 , sticky=tk.W)
 
 
         row_num += 1
 
-        space_label2 = tk.Label(root ).grid( row=row_num, column=0 , padx=10 , pady=10 )
+        day_options = ["今天","明天"]
+
+        tk.Label(root, text="which day:", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
+        self.day_var = tk.StringVar(root)
+        self.day_var.set(day_options[ self.model.add_Day ])  # 默认选项
+        self.day_menu = tk.OptionMenu(root, self.day_var, *day_options, command= self.update_day)
+        self.day_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
 
         row_num += 1
 
@@ -129,14 +135,23 @@ class Application(tk.Frame):
         self.status_text.grid( row = row_num  ,column=1 , padx=10 , pady=20  )
 
 
-
-    def user_select(self, value):
-        self.update_token()
-
-    def update_token(self , *args):
+    # 选择学号时，清空token
+    def user_select(self, *args ):
         selected_user = [user for user in self.config["USERS_INFO"] if user["OpenId"] == self.user_var.get()][0]
         self.token_entry.delete(0, tk.END)  # 清除原有内容
         self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
+        self.model.token = selected_user["JWTUserToken"]
+        self.model.openid = selected_user["OpenId"]
+        print_order_status()
+
+    def update_day(self , *args ):
+        self.model.add_Day = 0 if self.day_var.get() == "今天" else 1
+        print_order_status()
+
+    # 更新token,写入json
+    def update_token(self , *args):
+        self.model.token = self.token_entry.get()
+
 
     def update_time1(self , *args):
         time_str1 = self.time_var1.get()
@@ -145,6 +160,9 @@ class Application(tk.Frame):
             self.model.time1_needed = True
         else :
             self.model.time1_needed = False
+        self.calc_sum()
+        print_order_status()
+
 
     def update_time2(self , *args):
         time_str2 = self.time_var2.get()
@@ -153,9 +171,14 @@ class Application(tk.Frame):
             self.model.time2_needed = True
         else :
             self.model.time2_needed = False
+        self.calc_sum()
+        print_order_status()
 
     def start_booking(self , *args):
+        if self.model.started == True :
+            return
         print_with_time("start")
+        self.model.started = True
         threading.Thread(target=self.start_booking_thread, daemon=True ).start()
 
 
@@ -175,9 +198,13 @@ class Application(tk.Frame):
         # 更新界面
         self.status_text.update()
 
-
-
-
+    def calc_sum(self):
+        sum = 0
+        if self.time_var1.get() != "无" :
+            sum += 1
+        if self.time_var2.get() != "无" :
+            sum += 1
+        self.model.sum = sum
 
 root = tk.Tk()
 root.geometry("1024x800")

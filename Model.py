@@ -1,5 +1,16 @@
 import json
 
+
+CONFIG_PATH = 'config.json'  # 配置文件路径
+
+
+
+def load_config():
+    with open(CONFIG_PATH, 'r') as f:
+        config = json.load(f)
+    return config
+
+
 class SingletonMeta(type):
     _instances = {}
 
@@ -25,8 +36,17 @@ class Model(metaclass=SingletonMeta):
             self.config = json.load(json_file)
 
     def initParams(self):
+        config = load_config()
+
+        self.token = config["USERS_INFO"][0]["JWTUserToken"]
+        self.openid = config["USERS_INFO"][0]["OpenId"]
+        self.begin_time1 = config["BOOKING"]["RESERVE_TIME_SLOT"][0]
+        self.begin_time2 = config["BOOKING"]["RESERVE_TIME_SLOT"][1]
         self.bDebug = False
         self.time1_ordered = False
         self.time2_ordered = False
         self.time1_needed = True
         self.time2_needed = True
+        self.add_Day = 1
+        self.started = False
+        self.sum = 2
