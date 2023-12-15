@@ -4,6 +4,8 @@ import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
 from LogSys import print_with_time
+from Model import Model
+import calendar
 
 
 import requests
@@ -18,10 +20,10 @@ def load_config():
     return config
 
 
-def order_it( config , openid , token , begin_time, end_time, today_or_tomorrow):
+def order_it(  begin_time, end_time, today_or_tomorrow ):
+    model = Model()
 
-
-    headers = config['HEADERS'].copy()
+    headers = model.config['HEADERS'].copy()
 
     checkdata_s = f'[{{' \
                   f'"FieldNo":"",' \
@@ -46,51 +48,56 @@ def order_it( config , openid , token , begin_time, end_time, today_or_tomorrow)
     # }
     # 构建Cookie
     Cookie = {
-        'JWTUserToken' : token,
-        'OpenId' : openid
+        'JWTUserToken' : model.token,
+        'OpenId' : model.openid
     }
-
-
 
     s = requests.Session()
     s.cookies.update(Cookie)
 
-
     # response
     response = s.get(url, headers=headers  )
-
 
     try:
         result_json = json.loads( response.text )
     except json.decoder.JSONDecodeError as e:
-        print_with_time("Token过期了吧。")
+        print_with_time("小助手温馨提示：您的Token可能过期了！。")
         global bPause
         bPause = True
 
 
-    print_with_time(result_json['message'])
+    order_date = (datetime.now() + timedelta(days=1)).date()  # 明天日期
+    week_days = ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
+    weekday = order_date.weekday()
 
     if result_json['type'] == 1 :
-        print_with_time("成功预约")
+        print_with_time(f"成功预约 {order_date} {week_days[weekday]} 的 {begin_time} 到 {end_time} 的场子！！！")
+        # 这个时段的都不用抢了
+        if begin_time == model.begin_time1 :
+            model.time1_ordered = True
+        if begin_time == model.begin_time2 :
+            model.time2_ordered = True
         return 1
     else:
+        print_with_time(f"没约到 {order_date} {week_days[weekday]} 的 {begin_time} 到 {end_time} 的场子，"
+                        f"因为：{result_json['message']}")
         return 0
 
 
-
-
-def book( openid , token , begin_time1 , begin_time2 ):
-    config = load_config()
+def book( ):
+    model = Model()
 
     print_with_time("********************开始预约!************************")
     result_num = 0
 
-    print_with_time("OpenID: {openid}".format( openid = openid ) )
-    print_with_time("JWTUserToken: {token}".format( token = token ) )
-    print_with_time("第一个场: {start1}:00 ~ {end1}:00 ".format( start1 = begin_time1 , end1 = begin_time1+1 ) )
-    print_with_time("第二个场: {start2}:00 ~ {end2}:00 ".format( start2 = begin_time2 , end2 = begin_time2+1 ) )
+    print_with_time("OpenID: {openid}".format( openid = model.openid ) )
+    print_with_time("JWTUserToken: {token}".format( token = model.token ) )
+    if model.time1_needed == True:
+        print_with_time("第一个场: {start1}:00 ~ {end1}:00 ".format( start1 = model.begin_time1 , end1 = model.begin_time1+1 ) )
+    if model.time2_needed == True:
+        print_with_time("第二个场: {start2}:00 ~ {end2}:00 ".format( start2 = model.begin_time2 , end2 = model.begin_time2+1 ) )
 
-    while result_num < config['BOOKING']['NUM_OF_VENUES']:
+    while result_num < model.config['BOOKING']['NUM_OF_VENUES']:
 
         if bPause == True:
             break
@@ -98,18 +105,20 @@ def book( openid , token , begin_time1 , begin_time2 ):
         time_now = datetime.now().time()
         time_now_str = time_now.strftime("%H:%M:%S")
 
-        if config['BOOKING']['END_BOOKING_AT'] > time_now_str >= config['BOOKING']['START_BOOKING_AT']:
-        # if 1 :
-            # order_date = (datetime.now() + timedelta(days=1)).date()
-            # index = datetime.now().weekday() % len(config['USERS_INFO'])
-            for begin_time in config['BOOKING']['RESERVE_TIME_SLOT']:
-                result = order_it( config , openid , token , f"{begin_time}:00", f"{begin_time + 1}:00", 0)
+        if model.debug_var.get() == True or model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT']: #  开约条件
+
+            if model.time1_needed == True and model.time1_ordered == False :
+                result = order_it(f"{model.begin_time1}:00", f"{model.begin_time1 + 1}:00", 0)
+                result_num += result
+
+            if model.time2_needed == True and model.time2_ordered == False :
+                result = order_it(f"{model.begin_time2}:00", f"{model.begin_time2 + 1}:00", 0)
                 result_num += result
 
         # 检查是否达到预定的预约数量
-        if result_num == config['BOOKING']['NUM_OF_VENUES']:
-            print_with_time("预约成功!")
-
-        time.sleep(5)
+        if result_num == model.config['BOOKING']['NUM_OF_VENUES']:
+            print_with_time(f"小助手今日任务完成!总共约到了{result_num}个场子！")
+            break
+        # time.sleep(2)
 
 

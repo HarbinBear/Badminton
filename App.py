@@ -7,13 +7,15 @@ import json
 from Badminton import load_config, order_it , book
 from LogSys import StreamToWidget , print_with_time
 from datetime import datetime, timedelta
-
+from Model import Model
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        # self.pack()
+        self.model = Model()
+        self.model.initParams()
+        self.model.load_from_json('config.json')
         self.create_widgets()
         sys.stdout = StreamToWidget(self.status_text)
 
@@ -74,6 +76,7 @@ class Application(tk.Frame):
         self.update_token()
 
         time_options = ["{}:00~{}:00".format(i, i + 1) for i in range(15, 21)]
+        time_options.append("无")
 
         row_num += 1
 
@@ -81,7 +84,7 @@ class Application(tk.Frame):
         tk.Label(root,text="第一场:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )  # 设置背景色
         self.time_var1 = tk.StringVar(root)
         self.time_var1.set(time_options[0])  # 默认选项
-        self.time_menu1 = tk.OptionMenu(root, self.time_var1, *time_options)
+        self.time_menu1 = tk.OptionMenu(root, self.time_var1, *time_options , command= self.update_time1 )
         self.time_menu1.grid( row = row_num , column=1  , padx=10 , pady=10, sticky=tk.W )
 
         row_num += 1
@@ -90,7 +93,7 @@ class Application(tk.Frame):
         tk.Label(root,text="第二场:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )
         self.time_var2 = tk.StringVar(root)
         self.time_var2.set(time_options[0])  # 默认选项
-        self.time_menu2 = tk.OptionMenu(root, self.time_var2, *time_options)
+        self.time_menu2 = tk.OptionMenu(root, self.time_var2, *time_options ,  command= self.update_time2 )
         self.time_menu2.grid( row = row_num , column=1  , padx=10 , pady=10 , sticky=tk.W)
 
 
@@ -105,6 +108,14 @@ class Application(tk.Frame):
         self.go_button = tk.Button(root, text="开始预约", command=self.start_booking)
         self.go_button.grid( row = row_num , column=1   , padx=10 , pady=10 )
 
+
+        row_num += 1
+
+        # 立即预约
+        tk.Label(root, text="立即预约", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
+        self.model.debug_var = tk.BooleanVar()
+        self.debug_checkbox = tk.Checkbutton(root, variable=self.model.debug_var )
+        self.debug_checkbox.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
         row_num += 1
 
         space_label3 = tk.Label(root ).grid( row=row_num, column=0 , padx=10 , pady=10 )
@@ -122,27 +133,38 @@ class Application(tk.Frame):
     def user_select(self, value):
         self.update_token()
 
-    def update_token(self):
+    def update_token(self , *args):
         selected_user = [user for user in self.config["USERS_INFO"] if user["OpenId"] == self.user_var.get()][0]
         self.token_entry.delete(0, tk.END)  # 清除原有内容
         self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
 
-    def start_booking(self):
+    def update_time1(self , *args):
+        time_str1 = self.time_var1.get()
+        if time_str1 != "无" :
+            self.model.begin_time1 = int(time_str1.split(":")[0])  # 提取出小时部分，并转换为整数类型
+            self.model.time1_needed = True
+        else :
+            self.model.time1_needed = False
+
+    def update_time2(self , *args):
+        time_str2 = self.time_var2.get()
+        if time_str2 != "无" :
+            self.model.begin_time2 = int(time_str2.split(":")[0])  # 提取出小时部分，并转换为整数类型
+            self.model.time2_needed = True
+        else :
+            self.model.time2_needed = False
+
+    def start_booking(self , *args):
         print_with_time("start")
         threading.Thread(target=self.start_booking_thread, daemon=True ).start()
 
 
     def start_booking_thread(self):
-        openid = self.user_var.get()
-        token = self.token_entry.get()
-
-        time_str1 = self.time_var1.get()
-        hour1 = int(time_str1.split(":")[0])  # 提取出小时部分，并转换为整数类型
-
-        time_str2 = self.time_var2.get()
-        hour2 = int(time_str2.split(":")[0])  # 提取出小时部分，并转换为整数类型
-
-        book( openid , token , hour1 , hour2 )
+        self.model.openid = self.user_var.get()
+        self.model.token = self.token_entry.get()
+        self.update_time1()
+        self.update_time2()
+        book( )
 
 
     def log_message(self, message):
@@ -159,7 +181,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("Badminton v0.1.1")
+root.title("CUC羽毛球小助手 v0.3")
 # root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()

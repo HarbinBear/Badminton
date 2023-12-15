@@ -1,7 +1,7 @@
 {
   "USERS_INFO": [
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNDgzNjk4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xMiAxNjowODoxOCJ9.ZKTzqtyQ6Pdwvve_oqqOXIBylAGQahTlPk0Jf5bsXWI",
+      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNjU5MTQ4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xNCAxNjo1MjoyOCJ9.O8ypobx3xcQ7g1AedG7-2EBfg8s8-YTVTIYeYi1uGG4",
       "OpenId": "202120087200004"
     },
     {
@@ -19,7 +19,7 @@
   ],
   "BOOKING": {
     "NUM_OF_VENUES": 2,
-    "START_BOOKING_AT": "07:50:00",
+    "START_BOOKING_AT": "07:40:00",
     "END_BOOKING_AT": "08:10:00",
     "RESERVE_TIME_SLOT": [19, 20]
   },
