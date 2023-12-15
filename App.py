@@ -142,6 +142,7 @@ class Application(tk.Frame):
         self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
         self.model.token = selected_user["JWTUserToken"]
         self.model.openid = selected_user["OpenId"]
+        self.model.name = selected_user["name"]
         print_order_status()
 
     def update_day(self , *args ):
@@ -208,7 +209,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("CUC羽毛球小助手 v0.3")
+root.title("CUC羽毛球小助手 v0.4")
 # root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()

@@ -38,10 +38,12 @@ class Model(metaclass=SingletonMeta):
     def initParams(self):
         config = load_config()
 
+        self.name = config["USERS_INFO"][0]["name"]
         self.token = config["USERS_INFO"][0]["JWTUserToken"]
         self.openid = config["USERS_INFO"][0]["OpenId"]
         self.begin_time1 = config["BOOKING"]["RESERVE_TIME_SLOT"][0]
         self.begin_time2 = config["BOOKING"]["RESERVE_TIME_SLOT"][1]
+
         self.bDebug = False
         self.time1_ordered = False
         self.time2_ordered = False
