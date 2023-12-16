@@ -109,7 +109,7 @@ class Application(tk.Frame):
 
         row_num += 1
 
-        weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
+        weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
         order_date = (datetime.now() + timedelta(days=2)).date()  # 后天日期
         order_weekday = order_date.weekday()
 
