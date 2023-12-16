@@ -162,7 +162,7 @@ class Application(tk.Frame):
         print_order_status()
 
     def update_order_week(self , *args ):
-        self.model.order_weekday_str = self.back_week_strvar.get()
+        self.model.order_weekday_str = self.order_week_strvar.get()
         print_order_status()
 
     # 更新token,写入json
