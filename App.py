@@ -99,13 +99,25 @@ class Application(tk.Frame):
 
         row_num += 1
 
-        day_options = ["今天","明天"]
+        day_options = ["第一天","第二天"]
 
-        tk.Label(root, text="which day:", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
+        tk.Label(root, text="第几天呢", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
         self.day_var = tk.StringVar(root)
         self.day_var.set(day_options[ self.model.add_Day ])  # 默认选项
         self.day_menu = tk.OptionMenu(root, self.day_var, *day_options, command= self.update_day)
         self.day_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
+
+        row_num += 1
+
+        weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
+        order_date = (datetime.now() + timedelta(days=2)).date()  # 后天日期
+        order_weekday = order_date.weekday()
+
+        tk.Label(root, text="约周几咧", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
+        self.order_week_strvar = tk.StringVar(root)
+        self.order_week_strvar.set(weekday_options[ order_weekday ])  # 默认选项
+        self.order_week_menu = tk.OptionMenu(root, self.order_week_strvar, *weekday_options, command= self.update_order_week)
+        self.order_week_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
 
         row_num += 1
 
@@ -146,7 +158,11 @@ class Application(tk.Frame):
         print_order_status()
 
     def update_day(self , *args ):
-        self.model.add_Day = 0 if self.day_var.get() == "今天" else 1
+        self.model.add_Day = 0 if self.day_var.get() == "第一天" else 1
+        print_order_status()
+
+    def update_order_week(self , *args ):
+        self.model.order_weekday_str = self.back_week_strvar.get()
         print_order_status()
 
     # 更新token,写入json
@@ -209,7 +225,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("CUC羽毛球小助手 v0.4")
+root.title("CUC羽毛球小助手 v0.5")
 # root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()

@@ -1,7 +1,7 @@
 {
   "USERS_INFO": [
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNjU5MTQ4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xNCAxNjo1MjoyOCJ9.O8ypobx3xcQ7g1AedG7-2EBfg8s8-YTVTIYeYi1uGG4",
+      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNzU5NTc2LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xNSAyMDo0NjoxNSJ9.JVf_qSAkl3gWuiwPAP3rEzpVjGFiMbHiQs8b1fVtIK8",
       "OpenId": "202120087200004",
       "name": "tianshu"
     },
@@ -23,7 +23,7 @@
   ],
   "BOOKING": {
     "NUM_OF_VENUES": 2,
-    "START_BOOKING_AT": "07:40:00",
+    "START_BOOKING_AT": "00:00:00",
     "END_BOOKING_AT": "08:10:00",
     "RESERVE_TIME_SLOT": [19, 20]
   },
