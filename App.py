@@ -207,14 +207,6 @@ class Application(tk.Frame):
         book( )
 
 
-    def log_message(self, message):
-        # 更新状态文本框
-        self.status_text.insert(tk.END, message + '\n')
-        # 自动滚动到底部
-        self.status_text.see(tk.END)
-        # 更新界面
-        self.status_text.update()
-
     def calc_sum(self):
         sum = 0
         if self.time_var1.get() != "无" :
