@@ -33,8 +33,8 @@ def check_day():
         result_json = json.loads(response.text)
     except json.decoder.JSONDecodeError as e:
         print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！。")
-        model.bPause = True
-        return
+        # model.bPause = True
+        return 0
 
     backend_weekday_str = result_json[1]["Week"]
 

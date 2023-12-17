@@ -63,7 +63,7 @@ def order_it(  begin_time, end_time, today_or_tomorrow ):
         result_json = json.loads( response.text )
     except json.decoder.JSONDecodeError as e:
         print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！。")
-        model.bPause = True
+        # model.bPause = True
         return
 
     global bToken_Valid_logged
@@ -96,19 +96,20 @@ def book( ):
 
     while result_num < model.config['BOOKING']['NUM_OF_VENUES']:
 
-        if model.bPause == True:
-            break
+        # if model.bPause == True:
+        #     break
 
         time_now = datetime.now().time()
         time_now_str = time_now.strftime("%H:%M:%S")
 
-        if model.debug_var.get() == True or model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT']: #  开约条件
+        if model.debug_var.get() == True or \
+                ( model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT'] and check_day() == 1 ) : #  开约条件
 
-            if model.time1_needed == True and model.time1_ordered == False and check_day() == 1 :
+            if model.time1_needed == True and model.time1_ordered == False  :
                 result = order_it(f"{model.begin_time1}:00", f"{model.begin_time1 + 1}:00", model.add_Day )
                 result_num += result
 
-            if model.time2_needed == True and model.time2_ordered == False and check_day() == 1 :
+            if model.time2_needed == True and model.time2_ordered == False :
                 result = order_it(f"{model.begin_time2}:00", f"{model.begin_time2 + 1}:00", model.add_Day )
                 result_num += result
 
