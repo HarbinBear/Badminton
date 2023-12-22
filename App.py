@@ -219,7 +219,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("CUC羽毛球小助手 v0.5")
+root.title("CUC羽毛球小助手 v0.6")
 # root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()
