@@ -69,7 +69,7 @@ class Application(tk.Frame):
         row_num += 1
 
         tk.Label(root,text="Token:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )  # 设置背景色
-        self.token_entry = tk.Entry(root , width=130  , fg= "blue" , validatecommand= self.update_token )
+        self.token_entry = tk.Entry(root , width=130  , fg= "blue"  )
         self.token_entry.grid( row = row_num , column=1  , padx=10 , pady=10, sticky=tk.W )
 
         # 初始token
@@ -150,9 +150,9 @@ class Application(tk.Frame):
     # 选择学号时，清空token
     def user_select(self, *args ):
         selected_user = [user for user in self.config["USERS_INFO"] if user["OpenId"] == self.user_var.get()][0]
-        self.token_entry.delete(0, tk.END)  # 清除原有内容
-        self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
-        self.model.token = selected_user["JWTUserToken"]
+        # self.token_entry.delete(0, tk.END)  # 清除原有内容
+        # self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
+        # self.model.token = selected_user["JWTUserToken"]
         self.model.openid = selected_user["OpenId"]
         self.model.name = selected_user["name"]
         print_order_status()
@@ -165,10 +165,10 @@ class Application(tk.Frame):
         self.model.order_weekday_str = self.order_week_strvar.get()
         print_order_status()
 
-    # 更新token,写入json
-    def update_token(self , *args):
-        self.model.token = self.token_entry.get()
-
+    # # 更新token
+    # def update_token(self , *args):
+    #     self.model.token = self.token_entry.get()
+    #     print_order_status()
 
     def update_time1(self , *args):
         time_str1 = self.time_var1.get()
@@ -192,18 +192,20 @@ class Application(tk.Frame):
         print_order_status()
 
     def start_booking(self , *args):
+        # token无法响应式更新，只使用开始按钮进行单独更新
+        self.model.token = self.token_entry.get()
+        print_order_status()
+
         if self.model.started == True :
             return
+
         print_with_time("start")
         self.model.started = True
+
         threading.Thread(target=self.start_booking_thread, daemon=True ).start()
 
 
     def start_booking_thread(self):
-        self.model.openid = self.user_var.get()
-        self.model.token = self.token_entry.get()
-        self.update_time1()
-        self.update_time2()
         book( )
 
 

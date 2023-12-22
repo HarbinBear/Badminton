@@ -39,7 +39,7 @@ class Model(metaclass=SingletonMeta):
         config = load_config()
 
         self.name = config["USERS_INFO"][0]["name"]
-        self.token = config["USERS_INFO"][0]["JWTUserToken"]
+        self.token = ""
         self.openid = config["USERS_INFO"][0]["OpenId"]
         self.begin_time1 = config["BOOKING"]["RESERVE_TIME_SLOT"][0]
         self.begin_time2 = config["BOOKING"]["RESERVE_TIME_SLOT"][1]

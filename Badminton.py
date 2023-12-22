@@ -62,9 +62,9 @@ def order_it(  begin_time, end_time, today_or_tomorrow ):
     try:
         result_json = json.loads( response.text )
     except json.decoder.JSONDecodeError as e:
-        print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！。")
+        print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！或者当前处在0到7点间的无法访问时段。[order_it]")
         # model.bPause = True
-        return
+        return 0
 
     global bToken_Valid_logged
     if bToken_Valid_logged == False:
@@ -92,7 +92,6 @@ def book( ):
     result_num = 0
 
     print_with_time("********************开始预约!************************")
-    print_order_status()
 
     while result_num < model.config['BOOKING']['NUM_OF_VENUES']:
 

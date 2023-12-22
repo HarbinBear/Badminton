@@ -32,7 +32,7 @@ def check_day():
     try:
         result_json = json.loads(response.text)
     except json.decoder.JSONDecodeError as e:
-        print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！。")
+        print_with_time(f"小助手温馨提示：{model.name} 的Token可能过期了！或者当前处在0到7点间的无法访问时段。[checkday]")
         # model.bPause = True
         return 0
 

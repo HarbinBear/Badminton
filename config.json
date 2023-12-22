@@ -1,29 +1,25 @@
 {
   "USERS_INFO": [
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNzU5NTc2LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xNSAyMDo0NjoxNSJ9.JVf_qSAkl3gWuiwPAP3rEzpVjGFiMbHiQs8b1fVtIK8",
       "OpenId": "202120087200004",
       "name": "tianshu"
     },
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNDgzNjk4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xMiAxNjowODoxOCJ9.ZKTzqtyQ6Pdwvve_oqqOXIBylAGQahTlPk0Jf5bsXWI",
       "OpenId": "202220135105239",
       "name": "hang"
     },
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNDgzNjk4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xMiAxNjowODoxOCJ9.ZKTzqtyQ6Pdwvve_oqqOXIBylAGQahTlPk0Jf5bsXWI",
       "OpenId": "202220135105221",
       "name": "shuhan"
     },
     {
-      "JWTUserToken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiMjAyMTIwMDg3MjAwMDA0IiwiZXhwIjoxNzAyNDgzNjk4LjAsImp0aSI6ImxnIiwiaWF0IjoiMjAyMy0xMi0xMiAxNjowODoxOCJ9.ZKTzqtyQ6Pdwvve_oqqOXIBylAGQahTlPk0Jf5bsXWI",
       "OpenId": "202220135105235",
       "name": "wanwan"
     }
   ],
   "BOOKING": {
     "NUM_OF_VENUES": 2,
-    "START_BOOKING_AT": "00:00:00",
+    "START_BOOKING_AT": "06:58:00",
     "END_BOOKING_AT": "08:10:00",
     "RESERVE_TIME_SLOT": [19, 20]
   },
