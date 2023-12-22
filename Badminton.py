@@ -127,15 +127,16 @@ def book( ):
 
 def print_order_status():
     model = Model()
-    day_str = "第一天" if model.add_Day == 0 else "第二天"
+    day_str = "当天" if model.add_Day == 0 else "第二天"
     print("-----------------------预约信息-----------------------------")
+    print_with_time(f"Name: {model.name}")
     print_with_time(f"OpenID: {model.openid}")
-    print_with_time(f"JWTUserToken: {model.token}" )
-    print_with_time(f"总共需要定{model.order_weekday_str}的{model.sum}个场子，其中：")
+    print_with_time(f"Token: {model.token}" )
+    print_with_time(f"总共需要定 {day_str} 的 {model.sum} 个场子：")
     if model.time1_needed == True:
-        print_with_time(f"{day_str}第一个场: {model.order_weekday_str}的{model.begin_time1}:00 ~ {model.begin_time1 +1}:00 ")
+        print_with_time(f"{model.order_weekday_str} {model.begin_time1}:00 ~ {model.begin_time1 +1}:00 ")
     if model.time2_needed == True:
-        print_with_time(f"{day_str}第二个场: {model.order_weekday_str}的{model.begin_time2}:00 ~ {model.begin_time2 +1}:00 ")
+        print_with_time(f"{model.order_weekday_str} {model.begin_time2}:00 ~ {model.begin_time2 +1}:00 ")
 
 
 

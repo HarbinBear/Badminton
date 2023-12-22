@@ -58,7 +58,7 @@ class Application(tk.Frame):
 
         # 用户信息选择
         self.config = load_config()
-        self.user_options = [user["OpenId"] for user in self.config["USERS_INFO"]]
+        self.user_options = [user["name"] for user in self.config["USERS_INFO"]]
 
         tk.Label(root, text="User:", bg="light blue").grid(row=row_num, column=0 , padx=10 , pady=10 )  # 设置背景色
         self.user_var = tk.StringVar(root)
@@ -149,7 +149,7 @@ class Application(tk.Frame):
 
     # 选择学号时，清空token
     def user_select(self, *args ):
-        selected_user = [user for user in self.config["USERS_INFO"] if user["OpenId"] == self.user_var.get()][0]
+        selected_user = [user for user in self.config["USERS_INFO"] if user["name"] == self.user_var.get()][0]
         # self.token_entry.delete(0, tk.END)  # 清除原有内容
         # self.token_entry.insert(0, selected_user["JWTUserToken"])  # 填充新的token
         # self.model.token = selected_user["JWTUserToken"]
