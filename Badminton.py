@@ -102,7 +102,7 @@ def book( ):
         time_now_str = time_now.strftime("%H:%M:%S")
 
         if model.debug_var.get() == True or \
-                ( model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT'] and check_day() == 1 ) : #  开约条件
+                model.config['BOOKING']['END_BOOKING_AT'] > time_now_str >= model.config['BOOKING']['START_BOOKING_AT']  : #  开约条件
 
             if model.time1_needed == True and model.time1_ordered == False  :
                 result = order_it(f"{model.begin_time1}:00", f"{model.begin_time1 + 1}:00", model.add_Day )

@@ -107,17 +107,17 @@ class Application(tk.Frame):
         self.day_menu = tk.OptionMenu(root, self.day_var, *day_options, command= self.update_day)
         self.day_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
 
-        row_num += 1
-
-        weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        order_date = (datetime.now() + timedelta(days=2)).date()  # 后天日期
-        order_weekday = order_date.weekday()
-
-        tk.Label(root, text="约周几咧", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
-        self.order_week_strvar = tk.StringVar(root)
-        self.order_week_strvar.set(weekday_options[ order_weekday ])  # 默认选项
-        self.order_week_menu = tk.OptionMenu(root, self.order_week_strvar, *weekday_options, command= self.update_order_week)
-        self.order_week_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
+        # row_num += 1
+        #
+        # weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        # order_date = (datetime.now() + timedelta(days=2)).date()  # 后天日期
+        # order_weekday = order_date.weekday()
+        #
+        # tk.Label(root, text="约周几咧", bg="light blue").grid(row=row_num, column=0, padx=10, pady=10)
+        # self.order_week_strvar = tk.StringVar(root)
+        # self.order_week_strvar.set(weekday_options[ order_weekday ])  # 默认选项
+        # self.order_week_menu = tk.OptionMenu(root, self.order_week_strvar, *weekday_options, command= self.update_order_week)
+        # self.order_week_menu.grid(row=row_num, column=1, padx=10, pady=10, sticky=tk.W)
 
         row_num += 1
 
@@ -219,7 +219,7 @@ class Application(tk.Frame):
 
 root = tk.Tk()
 root.geometry("1024x800")
-root.title("CUC羽毛球小助手 v0.6")
+root.title("CUC羽毛球小助手 v0.6.2")
 # root.attributes("-alpha", 0.9)
 app = Application(master=root)
 app.mainloop()
