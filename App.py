@@ -7,7 +7,8 @@ import json
 from Badminton import load_config, order_it , book , print_order_status
 from LogSys import StreamToWidget , print_with_time
 from datetime import datetime, timedelta
-from Model import Model
+from Model import Model, update_weekday
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -159,6 +160,7 @@ class Application(tk.Frame):
 
     def update_day(self , *args ):
         self.model.add_Day = 0 if self.day_var.get() == "第一天" else 1
+        update_weekday()
         print_order_status()
 
     def update_order_week(self , *args ):

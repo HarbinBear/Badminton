@@ -54,7 +54,12 @@ class Model(metaclass=SingletonMeta):
         self.started = False
         self.sum = 2
 
-        weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
-        order_date = (datetime.now() + timedelta(days=2)).date()  # 后天日期
-        order_weekday = order_date.weekday()
-        self.order_weekday_str = weekday_options[ order_weekday ]
+        update_weekday()
+
+
+def update_weekday():
+    model = Model()
+    weekday_options = ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
+    order_date = (datetime.now() + timedelta(days= model.add_Day)).date()  # 后天日期
+    order_weekday = order_date.weekday()
+    model.order_weekday_str = weekday_options[order_weekday]
