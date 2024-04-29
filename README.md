@@ -1,8 +1,9 @@
 # CUC羽毛球场小助手
 本项目是一个简易的自动化工具，旨在帮助中国传媒大学的师生更方便地在线预定羽毛球场地。通过自动化脚本简化预定过程，减少手动预定的麻烦与时间压力。
 
-![image](https://github.com/HarbinBear/Badminton/blob/BrownXiong/ScreenShot.png)
-
+<div align = "center" >
+    <img src="https://github.com/HarbinBear/Badminton/blob/BrownXiong/ScreenShot.png" width="50%" height="50%" >
+</div>
 
 ## 功能特性
 
